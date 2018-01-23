@@ -1,32 +1,50 @@
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const passport = require('passport');
+const mongoose = require('mongoose');
+const config = require('./config/database');
+const cors = require('cors');
 
-//app.use(express.static(_dirname+'/client'));
-app.use(function (req, res, next) {
+const users = require('./routes/users');
+const doctors = require('./routes/doctors');
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8100');
+const app = express();
 
-    // Pass to next layer of middleware
-    next();
-});
+//Port Number
+const port = 3000;
+//Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+//Allow Cross Origin Request
+app.use(cors());
+//Body Parser Middleware
 app.use(bodyParser.json());
+//Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
 
+app.use('/users', users);
+app.use('/doctors', doctors);
 
 Patient = require('./models/patient.js');
 
 //Connect to Mongoose
-//mongoose.connect('localhost/bookstore');
-var promise = mongoose.connect('mongodb://localhost/heartbeatdb', {
+mongoose.connect(config.database, {
   useMongoClient: true,
   /* other options */
 });
+//On connection
+mongoose.connection.on('connected', () => {
+    console.log('Connect to db '+config.database);
+});
+//On connection Error
+mongoose.connection.on('error', (err) => {
+    console.log('Database error '+err);
+});
 
 var db = mongoose.connection;
-promise.then(function(db) {
-});
+
 
 app.get('/', function(req, res){
 	res.send('Please use /api/patients');
@@ -72,5 +90,6 @@ app.delete('/api/patients/:_id', function(req, res){
 	});
 });
 
-app.listen(3000);
-console.log('Running on port 3000...');
+app.listen(port, () => {
+  console.log('Server running on port '+port);
+});
