@@ -8,6 +8,7 @@ const cors = require('cors');
 
 const users = require('./routes/users');
 const doctors = require('./routes/doctors');
+const patients = require('./routes/patients');
 
 const app = express();
 
@@ -26,8 +27,7 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 app.use('/doctors', doctors);
-
-Patient = require('./models/patient.js');
+app.use('/patients', patients);
 
 //Connect to Mongoose
 mongoose.connect(config.database, {
@@ -47,48 +47,10 @@ var db = mongoose.connection;
 
 
 app.get('/', function(req, res){
-	res.send('Please use /api/patients');
+	res.send('Routes available : /doctors, /patients');
 });
 
-app.get('/api/patients', function(req, res){
-	Patient.getPatients(function(err, patients){
-		if(err){
-			throw err;
-		}
-		res.json(patients);
-	});
-});
 
-app.post('/api/patients', function(req, res){
-	var patient = req.body;
-	Patient.addPatient(patient, function(err, patient){
-		if(err){
-			throw err;
-		}
-		res.json(patient);
-	});
-});
-
-app.put('/api/patients/:_id', function(req, res){
-	var id = req.params._id;
-	var patient = req.body;
-	Genre.updatePatient(id, patient, {}, function(err, patient){
-		if(err){
-			throw err;
-		}
-		res.json(patient);
-	});
-});
-
-app.delete('/api/patients/:_id', function(req, res){
-	var id = req.params._id;
-	Patient.removePatient(id, function(err, patient){
-		if(err){
-			throw err;
-		}
-		res.json(patient);
-	});
-});
 
 app.listen(port, () => {
   console.log('Server running on port '+port);

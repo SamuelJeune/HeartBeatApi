@@ -11,30 +11,25 @@ var patientSchema = mongoose.Schema({
 		required: true
 	},
 	username:{
-		type:String,
-		required: true
+		type:String
 	},
 	sex:{
-		type:String,
-		required:true
+		type:String
 	},
 	birthdate:{
-		type: Date,
-		required: true
+		type: Date
 	},
 	occupation:{
 		type: String,
 	},
 	phone:{
-		type:String,
-		required: true
+		type:String
 	},
 	mail:{
 		type:String
 	},
 	address:{
-		type:String,
-		required: true
+		type:String
 	},
 	picture_url:{
 		type:String

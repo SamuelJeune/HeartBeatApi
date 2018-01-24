@@ -5,12 +5,23 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 
+//Get User TEST!!
+router.get('/', function(req, res){
+	User.getUsers(function(err, users){
+		if(err){
+			throw err;
+		}
+		res.json(users);
+	});
+});
+
 //Register
 router.post('/register', (req, res, next) => {
   //res.send('REGISTER');
   let newUser = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    role: req.body.role
   });
 
   User.addUser(newUser, (err, user) => {
@@ -46,6 +57,7 @@ router.post('/authenticate', (req, res, next) => {
           user: {
             id: user._id,
             email: user.email,
+            role: user.role,
           }
         });
       }else{

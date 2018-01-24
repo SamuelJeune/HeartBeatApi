@@ -11,10 +11,17 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  role:{
+    type: String
   }
 });
 
 const User = module.exports = mongoose.model('User', UserSchema);
+
+module.exports.getUsers = function(callback, limit){
+	User.find(callback).limit(limit);
+}
 
 module.exports.getUserById = function(id, callback){
   User.findById(id,callback);

@@ -1,56 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const config = require('../config/database');
-const Doctor = require('../models/doctor');
+const Patient = require('../models/patient');
 
-
-//Get Doctors
 router.get('/', function(req, res){
-	Doctor.getDoctors(function(err, doctors){
+	Patient.getPatients(function(err, patients){
 		if(err){
 			throw err;
 		}
-		res.json(doctors);
+		res.json(patients);
 	});
 });
 
-//Register
 router.post('/', (req, res, next) => {
-  //res.send('REGISTER');
-  let newDoctor = new Doctor({
-    firstname: req.body.firstname,
-		lastname: req.body.lastname,
-		speciality: req.body.speciality,
-		email: req.body.email
-  });
-
-  Doctor.addDoctor(newDoctor, (err, doctor) => {
+	let patient = req.body;
+	Patient.addPatient(patient, (err, patient) =>{
     if(err){
       res.json({success: false, msg:'Failed to register doctor'});
     }else{
       res.json({success: true, msg:'Doctor registered'});
     }
-  });
+	});
 });
+
 
 router.put('/:_id', function(req, res){
 	var id = req.params._id;
-	var doctor = req.body;
-	Doctor.updateDoctor(id, doctor, {}, function(err, doctor){
+	var patient = req.body;
+	Genre.updatePatient(id, patient, {}, function(err, patient){
 		if(err){
 			throw err;
 		}
-		res.json(doctor);
+		res.json(patient);
 	});
 });
 
 router.delete('/:_id', function(req, res){
 	var id = req.params._id;
-	Doctor.removeDoctor(id, function(err, doctor){
+	Patient.removePatient(id, function(err, patient){
 		if(err){
 			throw err;
 		}
-		res.json(doctor);
+		res.json(patient);
 	});
 });
 
