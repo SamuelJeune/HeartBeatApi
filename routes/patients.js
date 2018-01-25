@@ -16,10 +16,26 @@ router.post('/', (req, res, next) => {
 	let patient = req.body;
 	Patient.addPatient(patient, (err, patient) =>{
     if(err){
-      res.json({success: false, msg:'Failed to register doctor'});
+      res.json({success: false, msg:'Failed to register patient'});
     }else{
-      res.json({success: true, msg:'Doctor registered'});
+      res.json({success: true, msg:'Patient registered'});
     }
+	});
+});
+
+//Profile
+router.post('/profile', (req, res, next) => {
+  //res.send('PROFILE');
+	const email = req.body.email;
+
+  Patient.getPatientByEmail(email, (err, patient) => {
+    if(err) throw err;
+    if(!patient){
+      return res.json({success: false, msg: 'Patient not found'})
+    }else{
+			res.json({patient: patient});
+		}
+
 	});
 });
 

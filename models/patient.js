@@ -25,7 +25,7 @@ var patientSchema = mongoose.Schema({
 	phone:{
 		type:String
 	},
-	mail:{
+	email:{
 		type:String
 	},
 	address:{
@@ -54,7 +54,7 @@ module.exports.getPatientById = function(id, callback){
 
 // Get Patient by Email
 module.exports.getPatientByEmail = function(email, callback){
-	Patient.findOne(email, callback);
+  Patient.findOne(email, callback);
 }
 
 // Add Patient
@@ -74,7 +74,7 @@ module.exports.updatePatient = function(id, patient, options, callback){
 		birthdate: patient.birthdate,
 		occupation: patient.occupation,
 		phone: patient.phone,
-		mail: patient.mail,
+		email: patient.email,
 		address: patient.address,
 		picture_url: patient.picture_url,
 	}

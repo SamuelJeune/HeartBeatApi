@@ -33,6 +33,22 @@ router.post('/', (req, res, next) => {
   });
 });
 
+//Profile
+router.post('/profile', (req, res, next) => {
+  //res.send('PROFILE');
+	const email = req.body.email;
+
+  Doctor.getDoctorByEmail(email, (err, doctor) => {
+    if(err) throw err;
+    if(!doctor){
+      return res.json({success: false, msg: 'doctor not found'})
+    }else{
+			res.json({doctor: doctor});
+		}
+
+	});
+});
+
 router.put('/:_id', function(req, res){
 	var id = req.params._id;
 	var doctor = req.body;

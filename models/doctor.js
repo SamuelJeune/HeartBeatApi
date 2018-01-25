@@ -38,10 +38,10 @@ module.exports.getDoctorById = function(id, callback){
 
 // Get Patient by Email
 module.exports.getDoctorByEmail = function(email, callback){
-	Doctor.findOne(email, callback);
+  Doctor.findOne(email, callback);
 }
 
-// Add Patient
+// Add Doctor
 module.exports.addDoctor = function(doctor, callback){
 	Doctor.create(doctor, callback);
 }
