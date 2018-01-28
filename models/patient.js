@@ -34,6 +34,9 @@ var patientSchema = mongoose.Schema({
 	picture_url:{
 		type:String
 	},
+	doctor_email:{
+		type:String
+	},
 	registered_date:{
 		type: Date,
 		default: Date.now
@@ -55,6 +58,10 @@ module.exports.getPatientById = function(id, callback){
 // Get Patient by Email
 module.exports.getPatientByEmail = function(email, callback){
   Patient.findOne(email, callback);
+}
+
+module.exports.getPatientsByDoctor = function(doctor, callback){
+	Patient.find({doctor_email: doctor}, callback);
 }
 
 // Add Patient
