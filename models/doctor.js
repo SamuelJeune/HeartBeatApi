@@ -3,7 +3,7 @@ const config = require('../config/database');
 
 
 //Patient Schema
-var doctorSchema = mongoose.Schema({
+const doctorSchema = mongoose.Schema({
 	firstname:{
 		type:String,
 		required: true
@@ -38,7 +38,8 @@ module.exports.getDoctorById = function(id, callback){
 
 // Get Patient by Email
 module.exports.getDoctorByEmail = function(email, callback){
-  Doctor.findOne(email, callback);
+	const query = {email: email}
+  Doctor.findOne(query, callback);
 }
 
 // Add Doctor

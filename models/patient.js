@@ -57,11 +57,15 @@ module.exports.getPatientById = function(id, callback){
 
 // Get Patient by Email
 module.exports.getPatientByEmail = function(email, callback){
-  Patient.findOne(email, callback);
+	const query = {email: email}
+  Patient.findOne(query, callback);
 }
 
 module.exports.getPatientsByDoctor = function(doctor, callback){
-	Patient.find({doctor_email: doctor}, callback);
+	var query = {};
+	query['doctor_email'] = doctor;
+	console.log("doctor : "+doctor);
+	Patient.find(query, callback);
 }
 
 // Add Patient

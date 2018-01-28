@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const Doctor = require('../models/doctor');
 
@@ -36,8 +38,7 @@ router.post('/', (req, res, next) => {
 //Profile
 router.post('/profile', (req, res, next) => {
   //res.send('PROFILE');
-	const email = req.body.email;
-
+	const email = req.body.doctor_email;
   Doctor.getDoctorByEmail(email, (err, doctor) => {
     if(err) throw err;
     if(!doctor){

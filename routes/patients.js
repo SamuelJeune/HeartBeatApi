@@ -27,7 +27,6 @@ router.post('/', (req, res, next) => {
 router.post('/profile', (req, res, next) => {
   //res.send('PROFILE');
 	const email = req.body.email;
-
   Patient.getPatientByEmail(email, (err, patient) => {
     if(err) throw err;
     if(!patient){
@@ -40,7 +39,7 @@ router.post('/profile', (req, res, next) => {
 });
 
 router.post('/doctor', (req, res, next) => {
-	const doctor_email = req.body.doctor;
+	const doctor_email = req.body.email;
 	Patient.getPatientsByDoctor(doctor_email, (err, patients) => {
 		if(err) throw err;
 		if(!patients){
