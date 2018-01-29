@@ -16,7 +16,7 @@ router.get('/', function(req, res){
 });
 
 //Register
-router.post('/register', (req, res, next) => {
+router.post('/register', passport.authenticate('jwt', {session: false}), (req, res, next) => {
   //res.send('REGISTER');
   let newUser = new User({
     email: req.body.email,

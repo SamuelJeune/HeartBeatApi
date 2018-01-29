@@ -7,7 +7,7 @@ const Doctor = require('../models/doctor');
 
 
 //Get Doctors
-router.get('/', function(req, res){
+router.get('/', passport.authenticate('jwt', {session: false}), function(req, res){
 	Doctor.getDoctors(function(err, doctors){
 		if(err){
 			throw err;
@@ -17,7 +17,7 @@ router.get('/', function(req, res){
 });
 
 //Register
-router.post('/', (req, res, next) => {
+router.post('/', passport.authenticate('jwt', {session: false}), (req, res, next) => {
   //res.send('REGISTER');
   let newDoctor = new Doctor({
     firstname: req.body.firstname,
@@ -36,7 +36,7 @@ router.post('/', (req, res, next) => {
 });
 
 //Profile
-router.post('/profile', (req, res, next) => {
+router.post('/profile', passport.authenticate('jwt', {session: false}), (req, res, next) => {
   //res.send('PROFILE');
 	const email = req.body.doctor_email;
   Doctor.getDoctorByEmail(email, (err, doctor) => {
@@ -50,7 +50,7 @@ router.post('/profile', (req, res, next) => {
 	});
 });
 
-router.put('/:_id', function(req, res){
+router.put('/:_id', passport.authenticate('jwt', {session: false}), function(req, res){
 	var id = req.params._id;
 	var doctor = req.body;
 	Doctor.updateDoctor(id, doctor, {}, function(err, doctor){
@@ -61,7 +61,7 @@ router.put('/:_id', function(req, res){
 	});
 });
 
-router.delete('/:_id', function(req, res){
+router.delete('/:_id', passport.authenticate('jwt', {session: false}), function(req, res){
 	var id = req.params._id;
 	Doctor.removeDoctor(id, function(err, doctor){
 		if(err){

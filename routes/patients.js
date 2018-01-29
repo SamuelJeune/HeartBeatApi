@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const config = require('../config/database');
 const Patient = require('../models/patient');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
-router.get('/', function(req, res){
+router.get('/', passport.authenticate('jwt', {session: false}), function(req, res){
 	Patient.getPatients(function(err, patients){
 		if(err){
 			throw err;
@@ -12,7 +14,7 @@ router.get('/', function(req, res){
 	});
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', passport.authenticate('jwt', {session: false}), (req, res, next) => {
 	let patient = req.body;
 	Patient.addPatient(patient, (err, patient) =>{
     if(err){
@@ -24,9 +26,10 @@ router.post('/', (req, res, next) => {
 });
 
 //Profile
-router.post('/profile', (req, res, next) => {
+router.post('/profile', passport.authenticate('jwt', {session: false}), (req, res, next) => {
   //res.send('PROFILE');
 	const email = req.body.email;
+	console.log(req);
   Patient.getPatientByEmail(email, (err, patient) => {
     if(err) throw err;
     if(!patient){
@@ -38,7 +41,7 @@ router.post('/profile', (req, res, next) => {
 	});
 });
 
-router.post('/doctor', (req, res, next) => {
+router.post('/doctor', passport.authenticate('jwt', {session: false}), (req, res, next) => {
 	const doctor_email = req.body.email;
 	Patient.getPatientsByDoctor(doctor_email, (err, patients) => {
 		if(err) throw err;
@@ -51,7 +54,7 @@ router.post('/doctor', (req, res, next) => {
 });
 
 
-router.put('/:_id', function(req, res){
+router.put('/:_id', passport.authenticate('jwt', {session: false}), function(req, res){
 	var id = req.params._id;
 	var patient = req.body;
 	Genre.updatePatient(id, patient, {}, function(err, patient){
@@ -62,7 +65,7 @@ router.put('/:_id', function(req, res){
 	});
 });
 
-router.delete('/:_id', function(req, res){
+router.delete('/:_id', passport.authenticate('jwt', {session: false}), function(req, res){
 	var id = req.params._id;
 	Patient.removePatient(id, function(err, patient){
 		if(err){
