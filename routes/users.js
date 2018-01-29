@@ -6,7 +6,7 @@ const config = require('../config/database');
 const User = require('../models/user');
 
 //Get User TEST!!
-router.get('/', function(req, res){
+router.get('/', passport.authenticate('jwt', {session: false}), function(req, res){
 	User.getUsers(function(err, users){
 		if(err){
 			throw err;

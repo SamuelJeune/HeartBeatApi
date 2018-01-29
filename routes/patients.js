@@ -5,7 +5,7 @@ const Patient = require('../models/patient');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
-router.get('/', passport.authenticate('jwt', {session: false}), function(req, res){
+router.get('/', function(req, res){
 	Patient.getPatients(function(err, patients){
 		if(err){
 			throw err;
@@ -29,7 +29,6 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req, res, next
 router.post('/profile', passport.authenticate('jwt', {session: false}), (req, res, next) => {
   //res.send('PROFILE');
 	const email = req.body.email;
-	console.log(req);
   Patient.getPatientByEmail(email, (err, patient) => {
     if(err) throw err;
     if(!patient){
@@ -53,11 +52,23 @@ router.post('/doctor', passport.authenticate('jwt', {session: false}), (req, res
 	});
 });
 
+router.put('/addCheckUp', (req, res, next) => {
+	const check_up_to_push = req.body.check_up_to_push;
+	const email = req.body.email;
+	Patient.addCheckUp(check_up_to_push, email, (err) => {
+		if(err){
+      res.json({success: false, msg:'Failed to add check_up'});
+    }else{
+      res.json({success: true, msg:'success'});
+    }
+	})
+});
+
 
 router.put('/:_id', passport.authenticate('jwt', {session: false}), function(req, res){
 	var id = req.params._id;
 	var patient = req.body;
-	Genre.updatePatient(id, patient, {}, function(err, patient){
+	Patient.updatePatient(id, patient, {}, function(err, patient){
 		if(err){
 			throw err;
 		}
